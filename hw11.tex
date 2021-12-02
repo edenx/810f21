@@ -3,7 +3,7 @@
 \begin{document}
 
 \begin{center}\bf
-Homework 11. Due by 5pm on Thursday 11/11.
+Homework 11 Solution -- Yidan Xu
 
 Parallel statistical computing.
 
@@ -17,19 +17,19 @@ All modern computers, from a basic laptop to a node on a computing cluster, have
 
 \url{https://en.wikipedia.org/wiki/Parallel_computing}
 
-YOUR ANSWER HERE.
+Since nowadays' desktop computer manufactures started to produce power efficient processors with multiple cores to deal with the problem of power consumption and overheating the major CPU of the machine, since multi-core processors each core is independent and can access the same memory concurrently.
 
 \item Some key terms for parallel computing are: process, thread, core, node. Briefly define these in your own words.
 
 \url{https://en.wikipedia.org/wiki/Parallel_computing}
 
-YOUR ANSWER HERE.
+Process: running of tasks on processor; Thread: Subtasks in a parallel program; Core: individual processing units within CPU. Node:  stand-alone computer in a network.
   
 \item What common statistical computing tasks are embarassingly parallel?
 
 \url{https://en.wikipedia.org/wiki/Embarrassingly_parallel}
 
-YOUR ANSWER HERE.
+Empirical risk (negative log-likelihood for iid sample) estimation using Monte Carlo.
 
 \item A basic tool for embarassingly parallel computing in R is \texttt{foreach}. This is now part of the \texttt{doParallel} library included in base R. Run the following R codes for generating $10^8$ standard normal random variables, on your laptop or some other machine. Explain the relative speeds. The ``elapsed'' component of the run time is the total time, in seconds, and is the primary outcome of interest. If you like, you can read more about foreach at
   
@@ -62,20 +62,20 @@ YOUR ANSWER HERE.
   rbind(time0,time1,time2,time3,time4)
 \end{verbatim}
 
-  YOUR ANSWER HERE.
+The first one not using parallel is slowest among all. Comparing approach 2-4, the second gives the quickest runtime, which is having $10^2$ parallel tasks $rnorm(10^6)$. This is likely due to the trade-off of constrained number of tasks that can be run on one core and the time taken to run one task.
 
 \item What common statistical computing tasks could benefit greatly from using simple parallelization such as \texttt{foreach}?
   
-YOUR ANSWER HERE.
+Simulations -- when exploring model properties. Multiple-chains when running MCMC.
 
 \item Once you are using multicore computing on your laptop or desktop, the next step for additional computing resources is greatlakes (\url{https://arc-ts.umich.edu/greatlakes/}), which we will use next week. Previous experience with cluster computing in this group ranges from novice to expert: briefly describe any previous experience you have had with computing on a cluster.
 
-  YOUR ANSWER HERE.
+  I have ran programmes on department's cluster and AWS cloud before. However, I have 0 expierience in setting up environments (e.g. if I want to have specific versions of packages) on clusters and how to manage them. It would be nice if we can talk about this in the class.
 
 \item A popular data science parallel computing approach is Hadoop with MapReduce\\
 (\url{https://en.wikipedia.org/wiki/Apache_Hadoop}). Do you have suggestions on what parallel statistical computing tasks are more appropriate for Hadoop than for \texttt{foreach}?
 
-  YOUR ANSWER HERE.
+NLP -- handling enormous copra of text.
   
 \end{enumerate}
 \end{document}

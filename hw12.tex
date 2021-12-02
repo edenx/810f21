@@ -3,7 +3,7 @@
 \begin{document}
 
 \begin{center}\bf
-Homework 12. Due by 5pm on Thursday 11/18.
+Homework 12 Solution - Yidan Xu
 
 Statistical computing on greatlakes
 
@@ -23,11 +23,38 @@ From homework 11, we understand the relevance of being able to implement embarra
   \end{enumerate}
 Comment on situations when each approach might be suitable. Do you have advice, or relevant experiences?
   
-  YOUR ANSWER HERE.
+\begin{itemize}
+\item[(a)] It's good to use smaller example to test codes in the early stage of doing simulations etc.\\
+\item[(b)] When e.g. matrix multiplication is used extensively then acceleration can be achieved using C.\\
+\item[(c)] Exploit sparsity of the data - use sparse matrix whenever appropriate; use mathematically equivalent numerically stable expression ...\\
+\item[(d)] When much more computation power is required when running large-scale/parallisable tasks.
+
+\end{itemize}
 
 \item Follow the instructions at \url{https://ionides.github.io/810f21/gl/slides.pdf} to run a job testing foreach on greatlakes. Report back on your results, and any problems that arose or advice to share.
 
-YOUR ANSWER HERE.
+Comparing the \verb|elapsed| time to run test.R in Table (1) with Great Lakes cluster to that in Table (2) with Macbook Air, it is clear that parallelisation does take advantage of multiple cores with the cluster as time elapsed is reduced; however running one sequence on cluster is slower comparing to running it on personal computer in this case.
+
+I was having trouble sending the result back to my laptop using scp, I did specify the correct path on my computer, however it is saying that it is not recognised.
+
+\begin{table}[!htbp] \centering
+\caption{\footnotesize Run time of test.R on Great Lakes cluster.}
+\label{tab:GL}
+\begin{tabular}{lccccc}
+\\[-1.8ex]\hline \hline \\[-1.8ex] 
+&user.self & sys.self & elapsed & user.child & sys.child\\
+\hline \\[-1.8ex] 
+time0 &6.36 &0.315 &6.691 &0 &0\\
+time1 &0.288 & 0.883 &2.184 &0 &0\\
+time2 &0.223 &0.811 &1.439 &1.107 &0.273\\
+time3 &0.344 &0.751 &1.529 &6.851 &2.143\\
+time4 &1.103 &1.436 &2.786 &7.356 &3.596\\
+\hline \\[-1.8ex] 
+\end{tabular}
+\end{table}
+
+\begin{table}[!htbp] \centering  \caption{\footnotesize Run time of test.R on Mac.}
+\label{tab:mac}\begin{tabular}{lccccc} \\[-1.8ex]\hline \hline \\[-1.8ex]  & user.self & sys.self & elapsed & user.child & sys.child \\ \hline \\[-1.8ex] time0 & $4.754$ & $0.154$ & $4.912$ & $0$ & $0$ \\ time1 & $0.196$ & $0.402$ & $2.335$ & $3.776$ & $0.567$ \\ time2 & $0.164$ & $0.420$ & $2.863$ & $1.350$ & $0.290$ \\ time3 & $0.228$ & $0.469$ & $2.879$ & $5.446$ & $1.218$ \\ time4 & $0.905$ & $0.513$ & $24.543$ & $5.539$ & $1.264$ \\ \hline \\[-1.8ex] \end{tabular} \end{table} 
   
 \end{enumerate}
 \end{document}

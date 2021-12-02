@@ -23,7 +23,9 @@ output:
 
     iv. Report briefly on your past experience with git, and what you learned while studying for this homework. Edit the `hw09.Rmd` file in the `810f21` git repository, compile this to html (for example, using Rstudio) and submit your report via Canvas as an html file.
 
-YOUR ANSWER HERE. YOU CAN DELETE THE REMAINDER OF THIS FILE IF YOU WANT TO.
+Answer:
+
+I have been using github to do version control on my previous project. But my grasp on shell commands is very limited. I haven't yet setup git account on my new laptop, so this is a good opportunity to do that.
 
 --------------
 
