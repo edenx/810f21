@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage{fullpage,hyperref,verbatim}\setlength{\parskip}{3mm}\setlength{\parindent}{0mm}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+
+
+
+\begin{center}\bf
+Homework 13 Solution - Yidan Xu
+
+A workflow for reproducible statistical research: combining Latex and R with knitr
+
+\end{center}
+
+There are numerous advantages to writing a statistics paper in such a way that the tables, figures and other quantitative results are automatically generated from chunks of code included in the document. These include:
+\begin{enumerate}
+\item Changing the data. Questions like ``How stable are my conclusions? What happens to all my figures and tables if I omit the 5 smallest states from my panel of 50 states?'' can be rapidly answered. The easier it is to investigate new analyses, the more things you explore. 
+\item Effective collaboration. All coauthors can read, run and modify all the code that produced the figures in the current version of a circulated draft.
+\item Debugging. If your adviser asks ``How exactly did this number get produced?'' you can give a rapid, precise and accurate answer.
+\item Updating. If you are presenting code (e.g., a lab presentation) and you want to make changes where necessary for a new software version, you simply re-run the document.
+\item Revisions. 4 months after you submitted the paper, when the referee reports come back, you will be glad if you have your work organized in this way!
+\end{enumerate}
+Rmarkdown and Jupyter are convenient platforms for exploratory investigations, but Rnw (a format associated with the R package knitr) is better placed to generate Latex for publication-quality pdf articles. This homework investigates a workflow, meaning a set of tools and procedures that together get research done effectively, used for the research project at \url{https://github.com/ionides/bagged_filters}
+
+The code is somewhat complex and involves various features that may be new to you. You are welcome to ask your peers for help if you get stuck. Edit the file \texttt{810f21/hw13.Rnw} with your answers, build a pdf and submit it to Canvas.
+
+To get started, clone the \texttt{bagged\_filters} git repository to your laptop, as in Homework 9. There are two pdf files:
+  \begin{itemize}
+  \item \texttt{ms.pdf}, the main article.
+  \item \texttt{si/si.pdf}, an online supplement for the article.
+  \end{itemize}
+  We will focus on ms.pdf.
+
+\begin{enumerate}
+
+\item The source file for ms.pdf is ms.Rnw, a file in R noweb format designed to be run by \texttt{knitr::knit()}. Rstudio runs \texttt{knit()} automatically when you ask it to build from an Rnw file, but for workflows based on text commands it is good practice to call \texttt{knit()} directly from R. Rnw files simply combine chunks of \LaTeX with chunks of R code.
+
+Have you used Rnw format before, either through Rstudio or not? Rnw has some similarities with the Rmarkdown (Rmd) format. Rmd is slightly simpler and quicker for some tasks, but more difficult than Rnw for fine control of Latex.
+
+No I have not used Rnw format before, and it is extremely painful to configure the Rmd to produce Latex documents when the final product is a good looking report.
+
+\item There are various ways to compile ms.Rnw to ms.pdf. All of them need the necessary R packages, which you may need to install on your laptop or greatlakes or anywhere else you try running the code.
+Note that before installing \texttt{spatPomp} you will need to have \texttt{pomp} installed, for which you may need to consult the instructions at \url{https://kingaa.github.io/pomp/install.html}.
+The installation of \texttt{pomp} is nontrivial because this package carries out compilation of C code, so you need to have a C compiler installed and talking properly to R. Time spent figuring this out is not entirely wasted. 
+
+Now, in an R session running in the \texttt{bagged\_filters} directory, you can run
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlkwd{library}\hlstd{(knitr)}
+\hlkwd{knit}\hlstd{(}\hlstr{"ms.Rnw"}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+If all is well, this will generate a file \texttt{ms.tex} which can be used to produce \texttt{ms.pdf} by running pdflatex. Likely, issues will arise that need to be solved to get this working. Spend a reasonable amount of time trying to get this working. It is okay if you cannot get the code to run, since many of the questions do not depend on this. Report on whether you were successful, what problems you overcame, and where you got stuck.
+
+It is pretty forward to knit the Rnw file and use pdflatex command in the terminal to generate the pdf. The only thing is probably that I need to install as few packages.
+
+\item Have you used \texttt{make} before? (\url{https://en.wikipedia.org/wiki/Make_(software)}) This is a standard tool for organizing scientific coding projects, and it is installed by default on Mac and Linux systems. The \texttt{bagged\_filters} directory has a Makefile, so you can run
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+make ms.pdf
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+at a terminal prompt to build ms.pdf from ms.Rnw. This just runs \texttt{knit} followed by \texttt{pdflatex} so it cannot work unless the separate steps are working. For debugging, it can be better to run \texttt{knit} and \texttt{pdflatex} sequentially.
+
+Try this, and report briefly.
+
+I tried the make command, and since the pdf file is already up to date, nothing is changed. 
+
+\item The manuscript can also be built on greatlakes, and this is appropriate for a production version having numerical calculations too extensive for a laptop. Identify the critical lines of code to enable the program to run on either greatlakes or a laptop.
+
+Most important thing is to get all necessary packages installed.
+
+Optionally, work on building ms.tex on greatlakes, by running
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+sbatch ms.sbat
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+This requires cloning the git repository to greatlakes and installing all necessary R packages locally in your greatlakes account, a somewhat tedious activity but maybe worthwhile practice at getting things set up correctly.
+
+\item Writing a reasonably large reproducible document combining text and code, you cannot avoid the issue of caching. You do not want to re-run all computations each time you edit any text in the document, so you must save (i.e., cache) results that do not need to be recomputed. Ideally, when we edit code we would re-run only the partial results that have changed as a consequence of the edit. Sadly, it is intractable to automate this in a foolproof way. The knitr code chunk option \texttt{cache=TRUE} re-runs a code chunk if that particular chunk is edited. It is necessary to delete all cached files (e.g., \texttt{rm -rf cache}) occasionally to rebuild the cache correctly. In ms.Rnw, the \texttt{stew()} function from the \texttt{pomp} package is used to give additional manual control of caching the most time-consuming results.
+
+Have you had any prior experience working with cache on reproducible documents?
+
+Yes. I usually use Jupyter notebook to run my script/classes/functions and get pretty plot displays. However, I found it extremely inefficient when I need to make sure to clean-up the cache first to update my imported function in the environment. Same goes to Rmd, if I changed one chunk and the previous cache is not cleaned up, the result may not be correct.
+
+\item For debugging, it is helpful to have a quick version of the code which can be run to check for errors before starting a long, expensive computing job. Setting \texttt{run\_level=1} in \texttt{ms.Rnw} gives a version of the code that runs in a few seconds. If you can successfully compile \texttt{ms.tex} or \texttt{ms.pdf}, try deleting all the cached results from \texttt{run\_level=1} by
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+rm -rf *_1
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+Then if you knit the document you will run quick versions of all the computations. Did that work for you?
+
+It runs for around 1 minutes.
+
+If you are new to Linux/Unix, work out what the parts of the command \texttt{rm -rf *\_1} do. The \texttt{f} flag may not be necessary for you.
+
+This means delete all directories that ends with \texttt{\_1} without asking.
+
+\item Workflows for writing manuscripts are build up over years, borrowed, shared, and modified for different purposes and evolving technologies. Compare this workflow with the range of techniques you already use.
+
+What I usually do is to have everything ran and figures output stored, which are later used for constructing a latex file with style file already configured (given the requirement). Since Rnw is much like a Latex file itself, I imagine it is easy to personalise the Latex file as well.
+
+\item Notice how the random number generator seed is set to give reproducible results (e.g., search for ``seed'' in ms.Rnw). Subtle problems can arise when setting seeds for parallel computations. Can you think of any? This code attempts to deal with them via the \texttt{doRNG} R package.
+
+
+Each process runs on different core would get the same seed, which produce the same result, which are not desirable for simulations that counts on random number generation. Hence, need to set different seeds for each process.
+
+\end{enumerate}
+
+\end{document}
